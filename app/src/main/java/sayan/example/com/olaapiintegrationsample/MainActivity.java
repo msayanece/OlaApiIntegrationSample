@@ -5,16 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sayan.example.com.olaapiintegrationsample.olasdk.AccessTokenManager;
 import sayan.example.com.olaapiintegrationsample.olasdk.Authenticate;
-import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.AuthenticateCallback;
 import sayan.example.com.olaapiintegrationsample.olasdk.OlaRidesApi;
-import sayan.example.com.olaapiintegrationsample.olasdk.models.ProductsResponse;
-import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.Service;
 import sayan.example.com.olaapiintegrationsample.olasdk.SessionConfig;
+import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.AuthenticateCallback;
+import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.Service;
+import sayan.example.com.olaapiintegrationsample.olasdk.models.ProductsResponse;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
             public void onAccessTokenSaved(String accessToken) {
                 Log.d(LOG_TAG, "Access token: "+accessToken);
                 Service service = OlaRidesApi.with(mSessionConfig).build().createService();
-                service.getProducts(PICK_UP_LATITUDE, PICK_UP_LONGITUDE).enqueue(new Callback<ProductsResponse>() {
+                Map<String, String> map = new HashMap<>();
+                map.put("X-APP-TOKEN", mSessionConfig.getxAppToken());
+                service.getRideEstimate(map,PICK_UP_LATITUDE, PICK_UP_LONGITUDE, PICK_UP_LATITUDE+0.12f, PICK_UP_LONGITUDE+0.04f).enqueue(new Callback<ProductsResponse>() {
                     @Override
                     public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
                         String productName = response.body().getCategories().get(0).getCancellationPolicy().getCurrency();
@@ -53,9 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ProductsResponse> call, Throwable t) {
-
+                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
+
             }
         });
     }
