@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import sayan.example.com.olaapiintegrationsample.R;
+import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.AuthenticateCallback;
 
 /**
  * Created by Admin on 20-10-2017.

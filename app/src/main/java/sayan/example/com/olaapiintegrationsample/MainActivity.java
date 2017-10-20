@@ -10,10 +10,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sayan.example.com.olaapiintegrationsample.olasdk.AccessTokenManager;
 import sayan.example.com.olaapiintegrationsample.olasdk.Authenticate;
-import sayan.example.com.olaapiintegrationsample.olasdk.AuthenticateCallback;
+import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.AuthenticateCallback;
 import sayan.example.com.olaapiintegrationsample.olasdk.OlaRidesApi;
-import sayan.example.com.olaapiintegrationsample.olasdk.ProductsResponse;
-import sayan.example.com.olaapiintegrationsample.olasdk.Service;
+import sayan.example.com.olaapiintegrationsample.olasdk.models.ProductsResponse;
+import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.Service;
 import sayan.example.com.olaapiintegrationsample.olasdk.SessionConfig;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 service.getProducts(PICK_UP_LATITUDE, PICK_UP_LONGITUDE).enqueue(new Callback<ProductsResponse>() {
                     @Override
                     public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
-                        String productName = response.body().getProducts().get(0).getDisplay_name();
+                        String productName = response.body().getCategories().get(0).getDisplayName();
                         Toast.makeText(MainActivity.this, "Name:"+productName, Toast.LENGTH_SHORT).show();
                     }
 

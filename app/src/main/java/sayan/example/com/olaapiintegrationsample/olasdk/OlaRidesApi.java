@@ -2,6 +2,7 @@ package sayan.example.com.olaapiintegrationsample.olasdk;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.Service;
 
 /**
  * Created by Admin on 20-10-2017.

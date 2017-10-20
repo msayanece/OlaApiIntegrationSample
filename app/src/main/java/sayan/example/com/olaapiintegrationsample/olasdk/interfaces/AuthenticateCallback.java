@@ -1,4 +1,4 @@
-package sayan.example.com.olaapiintegrationsample.olasdk;
+package sayan.example.com.olaapiintegrationsample.olasdk.interfaces;
 
 /**
  * Created by Admin on 20-10-2017.

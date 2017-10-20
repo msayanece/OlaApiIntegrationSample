@@ -1,9 +1,10 @@
-package sayan.example.com.olaapiintegrationsample.olasdk;
+package sayan.example.com.olaapiintegrationsample.olasdk.interfaces;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
+import sayan.example.com.olaapiintegrationsample.olasdk.models.ProductsResponse;
 
 /**
  * Created by Admin on 20-10-2017.
@@ -21,7 +22,7 @@ public interface Service {
      */
     @Headers("X-APP-TOKEN: f93d19f727524bb6b625df7403fb2879")
     @GET("/v1/products")
-    Call<ProductsResponse> getProducts(@Query("latitude") float latitude,
-                                       @Query("longitude") float longitude);
+    Call<ProductsResponse> getProducts(@Query("pickup_lat") float latitude,
+                                       @Query("pickup_lng") float longitude);
 
 }
