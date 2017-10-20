@@ -16,7 +16,10 @@ public class ProductsResponse {
 
     @SerializedName("categories")
     @Expose
-    public List<Category> categories = null;
+    private List<Category> categories = null;
+    @SerializedName("ride_estimate")
+    @Expose
+    private RideEstimate rideEstimate;
 
     public List<Category> getCategories() {
         return categories;
@@ -33,8 +36,4 @@ public class ProductsResponse {
     public void setRideEstimate(RideEstimate rideEstimate) {
         this.rideEstimate = rideEstimate;
     }
-
-    @SerializedName("ride_estimate")
-    @Expose
-    public RideEstimate rideEstimate;
 }

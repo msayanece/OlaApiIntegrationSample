@@ -11,7 +11,16 @@ public class CancellationPolicy {
 
     @SerializedName("cancellation_charge")
     @Expose
-    public Integer cancellationCharge;
+    private Integer cancellationCharge;
+    @SerializedName("currency")
+    @Expose
+    private String currency;
+    @SerializedName("cancellation_charge_applies_after_time")
+    @Expose
+    private Integer cancellationChargeAppliesAfterTime;
+    @SerializedName("time_unit")
+    @Expose
+    private String timeUnit;
 
     public Integer getCancellationCharge() {
         return cancellationCharge;
@@ -44,15 +53,4 @@ public class CancellationPolicy {
     public void setTimeUnit(String timeUnit) {
         this.timeUnit = timeUnit;
     }
-
-    @SerializedName("currency")
-
-    @Expose
-    public String currency;
-    @SerializedName("cancellation_charge_applies_after_time")
-    @Expose
-    public Integer cancellationChargeAppliesAfterTime;
-    @SerializedName("time_unit")
-    @Expose
-    public String timeUnit;
 }

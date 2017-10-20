@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 service.getProducts(PICK_UP_LATITUDE, PICK_UP_LONGITUDE).enqueue(new Callback<ProductsResponse>() {
                     @Override
                     public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
-                        String productName = response.body().getCategories().get(0).getDisplayName();
+                        String productName = response.body().getCategories().get(0).getCancellationPolicy().getCurrency();
                         Toast.makeText(MainActivity.this, "Name:"+productName, Toast.LENGTH_SHORT).show();
                     }
 

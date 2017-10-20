@@ -12,34 +12,37 @@ import java.util.List;
 public class Category {
     @SerializedName("id")
     @Expose
-    public String id;
+    private String id;
     @SerializedName("display_name")
     @Expose
-    public String displayName;
+    private String displayName;
     @SerializedName("currency")
     @Expose
-    public String currency;
+    private String currency;
     @SerializedName("distance_unit")
     @Expose
-    public String distanceUnit;
+    private String distanceUnit;
     @SerializedName("time_unit")
     @Expose
-    public String timeUnit;
+    private String timeUnit;
     @SerializedName("eta")
     @Expose
-    public Integer eta;
+    private Integer eta;
     @SerializedName("distance")
     @Expose
-    public String distance;
+    private String distance;
     @SerializedName("ride_later_enabled")
     @Expose
-    public String rideLaterEnabled;
+    private String rideLaterEnabled;
     @SerializedName("image")
     @Expose
-    public String image;
+    private String image;
     @SerializedName("fare_breakup")
     @Expose
-    public List<FareBreakup> fareBreakup = null;
+    private List<FareBreakup> fareBreakup = null;
+    @SerializedName("cancellation_policy")
+    @Expose
+    private CancellationPolicy cancellationPolicy;
 
     public String getId() {
         return id;
@@ -128,8 +131,4 @@ public class Category {
     public void setCancellationPolicy(CancellationPolicy cancellationPolicy) {
         this.cancellationPolicy = cancellationPolicy;
     }
-
-    @SerializedName("cancellation_policy")
-    @Expose
-    public CancellationPolicy cancellationPolicy;
 }

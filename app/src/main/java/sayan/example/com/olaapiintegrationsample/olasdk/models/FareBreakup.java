@@ -10,6 +10,38 @@ import java.util.List;
  */
 
 public class FareBreakup {
+
+    @SerializedName("type")
+    @Expose
+    private String type;
+    @SerializedName("minimum_distance")
+    @Expose
+    private String minimumDistance;
+    @SerializedName("minimum_time")
+    @Expose
+    private String minimumTime;
+    @SerializedName("base_fare")
+    @Expose
+    private String baseFare;
+    @SerializedName("minimum_fare")
+    @Expose
+    private String minimumFare;
+    @SerializedName("cost_per_distance")
+    @Expose
+    private String costPerDistance;
+    @SerializedName("waiting_cost_per_minute")
+    @Expose
+    private String waitingCostPerMinute;
+    @SerializedName("ride_cost_per_minute")
+    @Expose
+    private String rideCostPerMinute;
+    @SerializedName("rates_higher_than_usual")
+    @Expose
+    private Boolean ratesHigherThanUsual;
+    @SerializedName("surcharge")
+    @Expose
+    private List<Object> surcharge = null;
+
     public String getType() {
         return type;
     }
@@ -89,35 +121,4 @@ public class FareBreakup {
     public void setSurcharge(List<Object> surcharge) {
         this.surcharge = surcharge;
     }
-
-    @SerializedName("type")
-    @Expose
-    public String type;
-    @SerializedName("minimum_distance")
-    @Expose
-    public String minimumDistance;
-    @SerializedName("minimum_time")
-    @Expose
-    public String minimumTime;
-    @SerializedName("base_fare")
-    @Expose
-    public String baseFare;
-    @SerializedName("minimum_fare")
-    @Expose
-    public String minimumFare;
-    @SerializedName("cost_per_distance")
-    @Expose
-    public String costPerDistance;
-    @SerializedName("waiting_cost_per_minute")
-    @Expose
-    public String waitingCostPerMinute;
-    @SerializedName("ride_cost_per_minute")
-    @Expose
-    public String rideCostPerMinute;
-    @SerializedName("rates_higher_than_usual")
-    @Expose
-    public Boolean ratesHigherThanUsual;
-    @SerializedName("surcharge")
-    @Expose
-    public List<Object> surcharge = null;
 }
