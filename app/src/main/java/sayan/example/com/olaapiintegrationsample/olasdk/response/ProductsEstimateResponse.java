@@ -1,9 +1,12 @@
-package sayan.example.com.olaapiintegrationsample.olasdk.models;
+package sayan.example.com.olaapiintegrationsample.olasdk.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import sayan.example.com.olaapiintegrationsample.olasdk.models.Category;
+import sayan.example.com.olaapiintegrationsample.olasdk.models.RideEstimate;
 
 /**
  * Created by Sayan on 21-Oct-17.
