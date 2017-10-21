@@ -17,7 +17,7 @@ import sayan.example.com.olaapiintegrationsample.olasdk.OlaRidesApi;
 import sayan.example.com.olaapiintegrationsample.olasdk.SessionConfig;
 import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.AuthenticateCallback;
 import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.Service;
-import sayan.example.com.olaapiintegrationsample.olasdk.models.ProductsResponse;
+import sayan.example.com.olaapiintegrationsample.olasdk.models.ProductsEstimateResponse;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,27 +41,30 @@ public class MainActivity extends AppCompatActivity {
                 .setPassword("Titirece@50")
                 .build();
         mAccessTokenManager = new AccessTokenManager();
-        Authenticate.authenticateUser(this, mSessionConfig,mAccessTokenManager, new AuthenticateCallback(){
+        Authenticate.authenticateUser(this, mSessionConfig,mAccessTokenManager, new AuthenticateCallback() {
 
             @Override
             public void onAccessTokenSaved(String accessToken) {
-                Log.d(LOG_TAG, "Access token: "+accessToken);
+                Log.d(LOG_TAG, "Access token: " + accessToken);
                 Service service = OlaRidesApi.with(mSessionConfig).build().createService();
                 Map<String, String> map = new HashMap<>();
                 map.put("X-APP-TOKEN", mSessionConfig.getxAppToken());
-                service.getRideEstimate(map,PICK_UP_LATITUDE, PICK_UP_LONGITUDE, PICK_UP_LATITUDE+0.12f, PICK_UP_LONGITUDE+0.04f).enqueue(new Callback<ProductsResponse>() {
+                service.getRideEstimate(map,
+                        PICK_UP_LATITUDE,
+                        PICK_UP_LONGITUDE,
+                        PICK_UP_LATITUDE + 0.12f,
+                        PICK_UP_LONGITUDE + 0.04f).enqueue(new Callback<ProductsEstimateResponse>() {
                     @Override
-                    public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
-                        String productName = response.body().getCategories().get(0).getCancellationPolicy().getCurrency();
+                    public void onResponse(Call<ProductsEstimateResponse> call, Response<ProductsEstimateResponse> response) {
+                        String productName = response.body().getRideEstimate().get(0).getAvailableCabs().get(0).getDisplayName();
                         Toast.makeText(MainActivity.this, "Name:"+productName, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onFailure(Call<ProductsResponse> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<ProductsEstimateResponse> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "Error::"+t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
             }
         });
     }

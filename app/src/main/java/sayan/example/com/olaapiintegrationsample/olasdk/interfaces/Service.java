@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
+import sayan.example.com.olaapiintegrationsample.olasdk.models.ProductsEstimateResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.models.ProductsResponse;
 
 /**
@@ -40,10 +41,10 @@ public interface Service {
      * @return the request {@link Call}
      */
     @GET("/v1/products")
-    Call<ProductsResponse> getRideEstimate(@HeaderMap Map<String, String> headers,
-                                       @Query("pickup_lat") float pickupLatitude,
-                                       @Query("pickup_lng") float pickupLongitude,
-                                       @Query("drop_lat") float dropLatitude,
-                                       @Query("drop_lng") float dropLongitude);
+    Call<ProductsEstimateResponse> getRideEstimate(@HeaderMap Map<String, String> headers,
+                                                   @Query("pickup_lat") float pickupLatitude,
+                                                   @Query("pickup_lng") float pickupLongitude,
+                                                   @Query("drop_lat") float dropLatitude,
+                                                   @Query("drop_lng") float dropLongitude);
 
 }
