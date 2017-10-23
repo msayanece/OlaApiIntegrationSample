@@ -9,8 +9,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import sayan.example.com.olaapiintegrationsample.olasdk.models.Category;
-import sayan.example.com.olaapiintegrationsample.olasdk.models.RideEstimate;
+import sayan.example.com.olaapiintegrationsample.olasdk.models.products.Category;
+import sayan.example.com.olaapiintegrationsample.olasdk.models.products.RideEstimate;
 
 /**
  * Response object containing available products.

@@ -1,4 +1,4 @@
-package sayan.example.com.olaapiintegrationsample.olasdk.models;
+package sayan.example.com.olaapiintegrationsample.olasdk.models.rideestimate;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
