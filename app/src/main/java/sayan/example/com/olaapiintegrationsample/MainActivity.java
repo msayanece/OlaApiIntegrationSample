@@ -17,13 +17,7 @@ import sayan.example.com.olaapiintegrationsample.olasdk.OlaRidesApi;
 import sayan.example.com.olaapiintegrationsample.olasdk.SessionConfig;
 import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.AuthenticateCallback;
 import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.Service;
-import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideFeedbackParameters;
-import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideRequestParameters;
-import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.SOSParameter;
-import sayan.example.com.olaapiintegrationsample.olasdk.response.RideFeedbackResponse;
-import sayan.example.com.olaapiintegrationsample.olasdk.response.RideResponse;
-import sayan.example.com.olaapiintegrationsample.olasdk.response.SOSResponse;
-import sayan.example.com.olaapiintegrationsample.olasdk.response.TrackCabBookingResponse;
+import sayan.example.com.olaapiintegrationsample.olasdk.response.ProductsResponse;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,91 +48,102 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "Access token: " + accessToken);
                 final Service service = OlaRidesApi.with(mSessionConfig).build().createService();
                 final Map<String, String> headerMap = new HashMap<>();
-                headerMap.put("Authorization", "Bearer "+accessToken);
+//                headerMap.put("Authorization", "Bearer "+accessToken);
                 headerMap.put("X-APP-TOKEN", mSessionConfig.getxAppToken());
-                headerMap.put("Content-Type", "application/json");
-                RideRequestParameters rideRequestParameters =
-                        new RideRequestParameters.Builder()
-                                .setCategory("mini")
-                                .setPickupMode("NOW")
-                                .setPickupLat(PICK_UP_LATITUDE)
-                                .setPickupLng(PICK_UP_LONGITUDE)
-                                .setDropLat(PICK_UP_LATITUDE+0.1f)
-                                .setDropLng(PICK_UP_LONGITUDE+0.1f)
-                                .build();
-                service.requestRide(headerMap, rideRequestParameters).enqueue(new Callback<RideResponse>() {
+                service.getProducts(headerMap, PICK_UP_LATITUDE, PICK_UP_LONGITUDE, "rental").enqueue(new Callback<ProductsResponse>() {
                     @Override
-                    public void onResponse(Call<RideResponse> call, Response<RideResponse> response) {
-                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                        if (response.isSuccessful()) {
-                            final String bookingId = response.body().getBookingId();
-                            final Map<String, String> trackRideHeaderMap = new HashMap<>();
-                            trackRideHeaderMap.put("Authorization", "Bearer "+accessToken);
-                            trackRideHeaderMap.put("X-APP-TOKEN", mSessionConfig.getxAppToken());
-                            service.trackRideDetails(trackRideHeaderMap, bookingId).enqueue(new Callback<TrackCabBookingResponse>() {
-                                @Override
-                                public void onResponse(Call<TrackCabBookingResponse> call, Response<TrackCabBookingResponse> response) {
-                                    if (response.isSuccessful()) {
-                                        Toast.makeText(MainActivity.this, response.body().getBookingStatus(), Toast.LENGTH_SHORT).show();
-                                        if (response.body().getBookingStatus().equals("COMPLETED")){
-                                            RideFeedbackParameters rideFeedbackParameters = new RideFeedbackParameters.Builder()
-                                                    .setRating(3)
-                                                    .setFeedback("Delayed pickup,Unprofessional behaviour,High pricing,Too many driver calls,Cab not clean")
-                                                    .setComments("Horrible ride!")
-                                                    .setBookingId(response.body().getBookingId()).build();
-                                            service.giveRideFeedback(trackRideHeaderMap, rideFeedbackParameters).enqueue(new Callback<RideFeedbackResponse>() {
-
-
-                                                @Override
-                                                public void onResponse(Call<RideFeedbackResponse> call, Response<RideFeedbackResponse> response) {
-                                                    if (response.isSuccessful()){
-                                                        Toast.makeText(MainActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onFailure(Call<RideFeedbackResponse> call, Throwable t) {
-                                                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                            return;
-                                        }
-                                        if (response.body().getBookingStatus().equals("IN_PROGRESS")){
-                                            final boolean[] sos = {false};
-                                            SOSParameter sOSParameter = new SOSParameter.Builder().setBookingId(response.body().getBookingId()).build();
-                                            service.sendSOSSignal(trackRideHeaderMap, sOSParameter).enqueue(new Callback<SOSResponse>() {
-                                                @Override
-                                                public void onResponse(Call<SOSResponse> call, Response<SOSResponse> response) {
-                                                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                                    sos[0] = true;
-                                                }
-
-                                                @Override
-                                                public void onFailure(Call<SOSResponse> call, Throwable t) {
-                                                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                            if (sos[0]){
-                                                return;
-                                            }
-                                        }
-                                    }
-                                    call.clone().enqueue(this);
-                                }
-
-                                @Override
-                                public void onFailure(Call<TrackCabBookingResponse> call, Throwable t) {
-                                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                    public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
+                        Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onFailure(Call<RideResponse> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<ProductsResponse> call, Throwable t) {
+
                     }
                 });
+//                headerMap.put("Content-Type", "application/json");
+//                RideRequestParameters rideRequestParameters =
+//                        new RideRequestParameters.Builder()
+//                                .setCategory("mini")
+//                                .setPickupMode("NOW")
+//                                .setPickupLat(PICK_UP_LATITUDE)
+//                                .setPickupLng(PICK_UP_LONGITUDE)
+//                                .setDropLat(PICK_UP_LATITUDE+0.1f)
+//                                .setDropLng(PICK_UP_LONGITUDE+0.1f)
+//                                .build();
+//                service.requestRide(headerMap, rideRequestParameters).enqueue(new Callback<RideResponse>() {
+//                    @Override
+//                    public void onResponse(Call<RideResponse> call, Response<RideResponse> response) {
+//                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                        if (response.isSuccessful()) {
+//                            final String bookingId = response.body().getBookingId();
+//                            final Map<String, String> trackRideHeaderMap = new HashMap<>();
+//                            trackRideHeaderMap.put("Authorization", "Bearer "+accessToken);
+//                            trackRideHeaderMap.put("X-APP-TOKEN", mSessionConfig.getxAppToken());
+//                            service.trackRideDetails(trackRideHeaderMap, bookingId).enqueue(new Callback<TrackCabBookingResponse>() {
+//                                @Override
+//                                public void onResponse(Call<TrackCabBookingResponse> call, Response<TrackCabBookingResponse> response) {
+//                                    if (response.isSuccessful()) {
+//                                        Toast.makeText(MainActivity.this, response.body().getBookingStatus(), Toast.LENGTH_SHORT).show();
+//                                        if (response.body().getBookingStatus().equals("COMPLETED")){
+//                                            RideFeedbackParameters rideFeedbackParameters = new RideFeedbackParameters.Builder()
+//                                                    .setRating(3)
+//                                                    .setFeedback("Delayed pickup,Unprofessional behaviour,High pricing,Too many driver calls,Cab not clean")
+//                                                    .setComments("Horrible ride!")
+//                                                    .setBookingId(response.body().getBookingId()).build();
+//                                            service.giveRideFeedback(trackRideHeaderMap, rideFeedbackParameters).enqueue(new Callback<RideFeedbackResponse>() {
+//
+//
+//                                                @Override
+//                                                public void onResponse(Call<RideFeedbackResponse> call, Response<RideFeedbackResponse> response) {
+//                                                    if (response.isSuccessful()){
+//                                                        Toast.makeText(MainActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                }
+//
+//                                                @Override
+//                                                public void onFailure(Call<RideFeedbackResponse> call, Throwable t) {
+//                                                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            });
+//                                            return;
+//                                        }
+//                                        if (response.body().getBookingStatus().equals("IN_PROGRESS")){
+//                                            final boolean[] sos = {false};
+//                                            SOSParameter sOSParameter = new SOSParameter.Builder().setBookingId(response.body().getBookingId()).build();
+//                                            service.sendSOSSignal(trackRideHeaderMap, sOSParameter).enqueue(new Callback<SOSResponse>() {
+//                                                @Override
+//                                                public void onResponse(Call<SOSResponse> call, Response<SOSResponse> response) {
+//                                                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+//                                                    sos[0] = true;
+//                                                }
+//
+//                                                @Override
+//                                                public void onFailure(Call<SOSResponse> call, Throwable t) {
+//                                                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            });
+//                                            if (sos[0]){
+//                                                return;
+//                                            }
+//                                        }
+//                                    }
+//                                    call.clone().enqueue(this);
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<TrackCabBookingResponse> call, Throwable t) {
+//                                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<RideResponse> call, Throwable t) {
+//                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             }
         });
     }

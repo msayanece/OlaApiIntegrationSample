@@ -24,14 +24,16 @@ public class RideRequestParameters {
     private String pickup_mode;
     @Nonnull
     private String category;
+    private String coupon_code;
 
-    private RideRequestParameters(Float pickup_lat, Float pickup_lng, Float drop_lat, Float drop_lng, String pickup_mode, String category) {
+    private RideRequestParameters(Float pickup_lat, Float pickup_lng, Float drop_lat, Float drop_lng, String pickup_mode, String category, String coupon_code) {
         this.pickup_lat = pickup_lat;
         this.pickup_lng = pickup_lng;
         this.drop_lat = drop_lat;
         this.drop_lng = drop_lng;
         this.pickup_mode = pickup_mode;
         this.category = category;
+        this.coupon_code = coupon_code;
     }
 
     /**
@@ -45,19 +47,21 @@ public class RideRequestParameters {
         private Float dropLng;
         private String pickupMode;
         private String category;
+        private String couponCode;
 
         public Builder() {
         }
 
         public Builder(
                 @NonNull Float pickupLat, @Nonnull Float pickupLng, @Nonnull Float dropLat,
-                @Nonnull Float dropLng, @Nonnull String pickupMode, @Nonnull String category) {
+                @Nonnull Float dropLng, @Nonnull String pickupMode, @Nonnull String category, String couponCode) {
             this.pickupLat = pickupLat;
             this.pickupLng = pickupLng;
             this.dropLat = dropLat;
             this.dropLng = dropLng;
             this.pickupMode = pickupMode;
             this.category = category;
+            this.couponCode = couponCode;
         }
 
         /**
@@ -121,17 +125,25 @@ public class RideRequestParameters {
             return this;
         }
 
+        public String getCouponCode() {
+            return couponCode;
+        }
+
+        public void setCouponCode(String couponCode) {
+            this.couponCode = couponCode;
+        }
+
         /**
          * Builds a {@link RideRequestParameters}.
          */
         public RideRequestParameters build() {
-            return new RideRequestParameters(pickupLat, pickupLng, dropLat, dropLng, pickupMode, category);
+            return new RideRequestParameters(pickupLat, pickupLng, dropLat, dropLng, pickupMode, category, couponCode);
         }
     }
 
     @Nonnull
     public Builder newBuilder() {
-        return new Builder(pickup_lat, pickup_lng, drop_lat, drop_lng, pickup_mode, category);
+        return new Builder(pickup_lat, pickup_lng, drop_lat, drop_lng, pickup_mode, category, coupon_code);
     }
 
     @Nullable
@@ -186,5 +198,13 @@ public class RideRequestParameters {
 
     public void setCategory(@Nullable String category) {
         this.category = category;
+    }
+
+    public String getCoupon_code() {
+        return coupon_code;
+    }
+
+    public void setCoupon_code(String coupon_code) {
+        this.coupon_code = coupon_code;
     }
 }

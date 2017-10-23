@@ -6,23 +6,32 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by Sayan on 20-Oct-17.
+ * Created by Admin on 23-10-2017.
  */
 
-public class FareBreakup {
+public class CategoryPackage {
 
     @SerializedName("type")
     @Expose
     private String type;
-    @SerializedName("fare")
+    @SerializedName("package_id")
     @Expose
-    private String fare;
+    private String packageId;
+    @SerializedName("package_description")
+    @Expose
+    private String packageDescription;
     @SerializedName("minimum_distance")
     @Expose
     private String minimumDistance;
+    @SerializedName("distance_unit")
+    @Expose
+    private String distanceUnit;
     @SerializedName("minimum_time")
     @Expose
     private String minimumTime;
+    @SerializedName("time_unit")
+    @Expose
+    private String timeUnit;
     @SerializedName("base_fare")
     @Expose
     private String baseFare;
@@ -32,12 +41,12 @@ public class FareBreakup {
     @SerializedName("cost_per_distance")
     @Expose
     private String costPerDistance;
-    @SerializedName("waiting_cost_per_minute")
+    @SerializedName("waiting_cost_per_hour")
     @Expose
-    private String waitingCostPerMinute;
-    @SerializedName("ride_cost_per_minute")
+    private String waitingCostPerHour;
+    @SerializedName("ride_cost_per_hour")
     @Expose
-    private String rideCostPerMinute;
+    private String rideCostPerHour;
     @SerializedName("rates_higher_than_usual")
     @Expose
     private Boolean ratesHigherThanUsual;
@@ -53,6 +62,22 @@ public class FareBreakup {
         this.type = type;
     }
 
+    public String getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(String packageId) {
+        this.packageId = packageId;
+    }
+
+    public String getPackageDescription() {
+        return packageDescription;
+    }
+
+    public void setPackageDescription(String packageDescription) {
+        this.packageDescription = packageDescription;
+    }
+
     public String getMinimumDistance() {
         return minimumDistance;
     }
@@ -61,12 +86,28 @@ public class FareBreakup {
         this.minimumDistance = minimumDistance;
     }
 
+    public String getDistanceUnit() {
+        return distanceUnit;
+    }
+
+    public void setDistanceUnit(String distanceUnit) {
+        this.distanceUnit = distanceUnit;
+    }
+
     public String getMinimumTime() {
         return minimumTime;
     }
 
     public void setMinimumTime(String minimumTime) {
         this.minimumTime = minimumTime;
+    }
+
+    public String getTimeUnit() {
+        return timeUnit;
+    }
+
+    public void setTimeUnit(String timeUnit) {
+        this.timeUnit = timeUnit;
     }
 
     public String getBaseFare() {
@@ -93,20 +134,20 @@ public class FareBreakup {
         this.costPerDistance = costPerDistance;
     }
 
-    public String getWaitingCostPerMinute() {
-        return waitingCostPerMinute;
+    public String getWaitingCostPerHour() {
+        return waitingCostPerHour;
     }
 
-    public void setWaitingCostPerMinute(String waitingCostPerMinute) {
-        this.waitingCostPerMinute = waitingCostPerMinute;
+    public void setWaitingCostPerHour(String waitingCostPerHour) {
+        this.waitingCostPerHour = waitingCostPerHour;
     }
 
-    public String getRideCostPerMinute() {
-        return rideCostPerMinute;
+    public String getRideCostPerHour() {
+        return rideCostPerHour;
     }
 
-    public void setRideCostPerMinute(String rideCostPerMinute) {
-        this.rideCostPerMinute = rideCostPerMinute;
+    public void setRideCostPerHour(String rideCostPerHour) {
+        this.rideCostPerHour = rideCostPerHour;
     }
 
     public Boolean getRatesHigherThanUsual() {
@@ -125,11 +166,4 @@ public class FareBreakup {
         this.surcharge = surcharge;
     }
 
-    public String getFare() {
-        return fare;
-    }
-
-    public void setFare(String fare) {
-        this.fare = fare;
-    }
 }

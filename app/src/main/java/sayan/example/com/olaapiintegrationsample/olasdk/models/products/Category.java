@@ -43,6 +43,12 @@ public class Category {
     @SerializedName("cancellation_policy")
     @Expose
     private CancellationPolicy cancellationPolicy;
+    @SerializedName("sub_categories")
+    @Expose
+    private List<Category> subCategories;
+    @SerializedName("packages")
+    @Expose
+    private List<CategoryPackage> packages;
 
     public String getId() {
         return id;
