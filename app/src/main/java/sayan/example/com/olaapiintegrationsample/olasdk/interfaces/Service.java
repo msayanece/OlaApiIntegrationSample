@@ -12,6 +12,7 @@ import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideReque
 import sayan.example.com.olaapiintegrationsample.olasdk.response.ProductsEstimateResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.ProductsResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.RideResponse;
+import sayan.example.com.olaapiintegrationsample.olasdk.response.TrackCabBookingResponse;
 
 /**
  * Created by Admin on 20-10-2017.
@@ -68,5 +69,21 @@ public interface Service {
      */
     @POST("/v1/bookings/create")
     Call<RideResponse> requestRide(@HeaderMap Map<String, String> headers, @Body RideRequestParameters rideRequestParameters);
+
+
+    /**
+     * Gets information about the products offered at a given location.
+     *
+     * @param headers mandatory header map with key...
+     *                 1) X-APP-TOKEN and value got from the OLA developer dashboard
+     *                 2) Authorization and value access token got from the OLA after user logged in like...
+     *                      "Bearer baac2cfc6be4489***f"
+     * @param bookingId the cab booking id generated when user request a cab ride using requestRide() using service {@link Service}.
+     *
+     * @return the request {@link Call}
+     */
+    @GET("/v1/bookings/track_ride")
+    Call<TrackCabBookingResponse> trackRideDetails(@HeaderMap Map<String, String> headers,
+                                                   @Query("booking_id") String bookingId);
 
 }

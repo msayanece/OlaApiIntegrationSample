@@ -19,6 +19,7 @@ import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.AuthenticateC
 import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.Service;
 import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideRequestParameters;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.RideResponse;
+import sayan.example.com.olaapiintegrationsample.olasdk.response.TrackCabBookingResponse;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
         Authenticate.authenticateUser(this, mSessionConfig,mAccessTokenManager, new AuthenticateCallback() {
 
             @Override
-            public void onAccessTokenSaved(String accessToken) {
+            public void onAccessTokenSaved(final String accessToken) {
                 Log.d(LOG_TAG, "Access token: " + accessToken);
-                Service service = OlaRidesApi.with(mSessionConfig).build().createService();
-                Map<String, String> headerMap = new HashMap<>();
+                final Service service = OlaRidesApi.with(mSessionConfig).build().createService();
+                final Map<String, String> headerMap = new HashMap<>();
                 headerMap.put("Authorization", "Bearer "+accessToken);
                 headerMap.put("X-APP-TOKEN", mSessionConfig.getxAppToken());
                 headerMap.put("Content-Type", "application/json");
@@ -65,6 +66,29 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<RideResponse> call, Response<RideResponse> response) {
                         Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                        if (response.isSuccessful()) {
+                            String bookingId = response.body().getBookingId();
+                            Map<String, String> trackRideHeaderMap = new HashMap<>();
+                            trackRideHeaderMap.put("Authorization", "Bearer "+accessToken);
+                            trackRideHeaderMap.put("X-APP-TOKEN", mSessionConfig.getxAppToken());
+                            service.trackRideDetails(trackRideHeaderMap, bookingId).enqueue(new Callback<TrackCabBookingResponse>() {
+                                @Override
+                                public void onResponse(Call<TrackCabBookingResponse> call, Response<TrackCabBookingResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(MainActivity.this, response.body().getBookingStatus(), Toast.LENGTH_SHORT).show();
+                                        if (response.body().getBookingStatus().equals("COMPLETED")){
+                                            return;
+                                        }
+                                    }
+                                    call.clone().enqueue(this);
+                                }
+
+                                @Override
+                                public void onFailure(Call<TrackCabBookingResponse> call, Throwable t) {
+                                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     }
 
                     @Override
