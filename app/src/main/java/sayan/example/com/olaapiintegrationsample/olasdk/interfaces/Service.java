@@ -8,9 +8,13 @@ import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.CancelRideParameter;
+import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideFeedbackParameters;
 import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideRequestParameters;
+import sayan.example.com.olaapiintegrationsample.olasdk.response.CancelRideBookingResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.ProductsEstimateResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.ProductsResponse;
+import sayan.example.com.olaapiintegrationsample.olasdk.response.RideFeedbackResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.RideResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.TrackCabBookingResponse;
 
@@ -58,7 +62,7 @@ public interface Service {
      * Requests a ride on behalf of a user given the RideRequestParameters.
      *
      * @param rideRequestParameters The ride request parameters.
-     *                              Create an object of RideRequestParameters using builder class
+     *                              Create an object of RideRequestParameters {@link RideRequestParameters} using builder class
      *
      * @param headers mandatory header map with key...
      *                1) X-APP-TOKEN and value got from the OLA developer dashboard
@@ -85,5 +89,39 @@ public interface Service {
     @GET("/v1/bookings/track_ride")
     Call<TrackCabBookingResponse> trackRideDetails(@HeaderMap Map<String, String> headers,
                                                    @Query("booking_id") String bookingId);
+
+
+    /**
+     * Requests a ride on behalf of a user given the RideRequestParameters.
+     *
+     * @param cancelRideParameter The cancel ride parameters with booking id and reason to cancel.
+     *                              Create an object of CancelRideParameter {@link CancelRideParameter}  using builder class
+     *
+     * @param headers mandatory header map with key...
+     *                1) X-APP-TOKEN and value got from the OLA developer dashboard
+     *                2) Authorization and value access token got from the OLA after user logged in like...
+     *                      "Bearer baac2cfc6be4489***f"
+     *                3) Content-Type and value as "application/json" must
+     * @return the request {@link Call}
+     */
+    @POST("/v1/bookings/cancel")
+    Call<CancelRideBookingResponse> cancelRide(@HeaderMap Map<String, String> headers, @Body CancelRideParameter cancelRideParameter);
+
+
+    /**
+     * Requests a ride on behalf of a user given the RideRequestParameters.
+     *
+     * @param rideFeedbackParameters The ride feedback parameters with booking id, rating, feedback text, and comments.
+     *                              Create an object of RideFeedbackParameters {@link RideFeedbackParameters} using builder class
+     *
+     * @param headers mandatory header map with key...
+     *                1) X-APP-TOKEN and value got from the OLA developer dashboard
+     *                2) Authorization and value access token got from the OLA after user logged in like...
+     *                      "Bearer baac2cfc6be4489***f"
+     *                3) Content-Type and value as "application/json" must
+     * @return the request {@link Call}
+     */
+    @POST("/v1/bookings/feedback")
+    Call<RideFeedbackResponse> giveRideFeedback(@HeaderMap Map<String, String> headers, @Body RideFeedbackParameters rideFeedbackParameters);
 
 }
