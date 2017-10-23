@@ -19,8 +19,10 @@ import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.AuthenticateC
 import sayan.example.com.olaapiintegrationsample.olasdk.interfaces.Service;
 import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideFeedbackParameters;
 import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideRequestParameters;
+import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.SOSParameter;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.RideFeedbackResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.RideResponse;
+import sayan.example.com.olaapiintegrationsample.olasdk.response.SOSResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.TrackCabBookingResponse;
 
 public class MainActivity extends AppCompatActivity {
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<RideResponse> call, Response<RideResponse> response) {
                         Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
                         if (response.isSuccessful()) {
-                            String bookingId = response.body().getBookingId();
+                            final String bookingId = response.body().getBookingId();
                             final Map<String, String> trackRideHeaderMap = new HashMap<>();
                             trackRideHeaderMap.put("Authorization", "Bearer "+accessToken);
                             trackRideHeaderMap.put("X-APP-TOKEN", mSessionConfig.getxAppToken());
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                                                     .setFeedback("Delayed pickup,Unprofessional behaviour,High pricing,Too many driver calls,Cab not clean")
                                                     .setComments("Horrible ride!")
                                                     .setBookingId(response.body().getBookingId()).build();
-                                            trackRideHeaderMap.put("Content-Type", "application/json");
                                             service.giveRideFeedback(trackRideHeaderMap, rideFeedbackParameters).enqueue(new Callback<RideFeedbackResponse>() {
 
 
@@ -102,8 +103,24 @@ public class MainActivity extends AppCompatActivity {
                                             });
                                             return;
                                         }
-                                        if (response.body().getBookingStatus().equals("BOOKING_CANCELLED")){
-                                            return;
+                                        if (response.body().getBookingStatus().equals("IN_PROGRESS")){
+                                            final boolean[] sos = {false};
+                                            SOSParameter sOSParameter = new SOSParameter.Builder().setBookingId(response.body().getBookingId()).build();
+                                            service.sendSOSSignal(trackRideHeaderMap, sOSParameter).enqueue(new Callback<SOSResponse>() {
+                                                @Override
+                                                public void onResponse(Call<SOSResponse> call, Response<SOSResponse> response) {
+                                                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    sos[0] = true;
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<SOSResponse> call, Throwable t) {
+                                                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            if (sos[0]){
+                                                return;
+                                            }
                                         }
                                     }
                                     call.clone().enqueue(this);

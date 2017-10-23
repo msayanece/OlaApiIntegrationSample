@@ -11,11 +11,13 @@ import retrofit2.http.Query;
 import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.CancelRideParameter;
 import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideFeedbackParameters;
 import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.RideRequestParameters;
+import sayan.example.com.olaapiintegrationsample.olasdk.postparameters.SOSParameter;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.CancelRideBookingResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.ProductsEstimateResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.ProductsResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.RideFeedbackResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.RideResponse;
+import sayan.example.com.olaapiintegrationsample.olasdk.response.SOSResponse;
 import sayan.example.com.olaapiintegrationsample.olasdk.response.TrackCabBookingResponse;
 
 /**
@@ -123,5 +125,22 @@ public interface Service {
      */
     @POST("/v1/bookings/feedback")
     Call<RideFeedbackResponse> giveRideFeedback(@HeaderMap Map<String, String> headers, @Body RideFeedbackParameters rideFeedbackParameters);
+
+
+    /**
+     * Requests a ride on behalf of a user given the RideRequestParameters.
+     *
+     * @param sosParameter The SOS parameters with booking id.
+     *                              Create an object of RideFeedbackParameters {@link SOSParameter} using builder class
+     *
+     * @param headers mandatory header map with key...
+     *                1) X-APP-TOKEN and value got from the OLA developer dashboard
+     *                2) Authorization and value access token got from the OLA after user logged in like...
+     *                      "Bearer baac2cfc6be4489***f"
+     *                3) Content-Type and value as "application/json" must
+     * @return the request {@link Call}
+     */
+    @POST("/v1/sos/signal")
+    Call<SOSResponse> sendSOSSignal(@HeaderMap Map<String, String> headers, @Body SOSParameter sosParameter);
 
 }
